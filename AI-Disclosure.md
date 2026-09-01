@@ -1,0 +1,8 @@
+# AI Disclosure Statement
+***
+*
+
+***
+# Prompts:
+## *
+***
