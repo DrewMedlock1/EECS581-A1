@@ -8,6 +8,12 @@
  *
  ***********************************************************************************/
 
+#include <string>
+
+bool extractIPv4(const std::string& str, unsigned long& outAddress, int& outPort) {
+    return false;
+}
+
 int main() {
     return 0;
 }
