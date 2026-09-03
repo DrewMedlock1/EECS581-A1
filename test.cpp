@@ -28,13 +28,21 @@ struct testCase {
 /* Test Cases are listed as structs inside this function */
 std::vector<testCase> createTestList() {
     std::vector<testCase> testList;
+    // Given test cases:
     testList.push_back(testCase{"192.168.1.1", 3232235777, -1, true});
     testList.push_back(testCase{"10.0.0.255:8080end", 167772415, 8080, true});
     testList.push_back(testCase{"192a168.1.1.1", 2818638081, -1, true});
     testList.push_back(testCase{"192.168.1.1.", 0, -1, false});
     testList.push_back(testCase{"Connection from 192.168.1.1 refused", 3232235777, -1, true});
-    testList.push_back(testCase{});
-    testList.push_back(testCase{});
+    testList.push_back(testCase{"192.168.01.1", 0, -1, false});
+    testList.push_back(testCase{"1.2.3.4:99999", 0, -1, false});
+    testList.push_back(testCase{"12.34.56", 0, -1, false});
+    testList.push_back(testCase{"no number here", 0, -1, false});
+    // Custom test Cases;
+    testList.push_back(testCase{"192.168.1.1:", 0, -1, false});
+    testList.push_back(testCase{"256.168.1.1", 0, -1, false});
+    testList.push_back(testCase{"255.255.255.255", 4294967295, -1, true});
+    testList.push_back(testCase{"0.0.0.0", 0, -1, true});
     return testList;
 }
 
