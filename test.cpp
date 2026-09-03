@@ -7,6 +7,8 @@
  * File Description: Testing file containing test cases, as well as code for executing tests.
  *
  ***********************************************************************************/
+#include <iostream>
+#include <ostream>
 #include <string>
 #include <vector>
 
@@ -42,8 +44,9 @@ std::vector<testCase> createTestList() {
 bool testExtractIPv4(const std::string& str, const unsigned long& expectedOutAddress, const int & expectedOutPort, bool expectedReturn) {
     unsigned long experimentalOutAddress = 0;
     int experimentalOutPort = 0;
-    extractIPv4(str, experimentalOutAddress, experimentalOutPort);
-    if (expectedOutAddress == experimentalOutAddress && expectedOutPort == experimentalOutPort) {
+    bool experimentalReturn = extractIPv4(str, experimentalOutAddress, experimentalOutPort);
+    if (expectedOutAddress == experimentalOutAddress && expectedOutPort == experimentalOutPort &&
+        experimentalReturn == expectedReturn) {
         return true;
     }
     else {
@@ -56,8 +59,17 @@ bool testExtractIPv4(const std::string& str, const unsigned long& expectedOutAdd
 
 int main() {
     auto testCases = createTestList();
+    bool passedTests = true;
     for (auto testCase : testCases) {
-
+        if (!testExtractIPv4(testCase.testString, testCase.expectedOutAddress, testCase.expectedOutPort, testCase.expectedReturn)) {
+            passedTests = false;
+        }
+    }
+    if (!passedTests) {
+        std::cout  << testFailureCounter << " Tests failed." << std::endl;
+        for (const auto& str : testFailureStrings) {
+            std::cout << str << std::endl;
+        }
     }
 }
 
