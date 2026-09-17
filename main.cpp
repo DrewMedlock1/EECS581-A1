@@ -19,10 +19,12 @@ bool extractIPv4(const std::string& str, unsigned long& outAddress, int& outPort
     // These set the default values of the 2 input values for returning if nothing matches.
     outAddress = 0;
     outPort = -1;
-
+    // This lambda function is a AI written function that uses the ASCII value of inputs to determine if a character is a
+    // digit 0-9
     const auto isDigit = [](char c) {
         return c >= '0' && c <= '9';
     };
+
     const auto isTokenChar = [&](char c) {
         return isDigit(c) || c == '.' || c == ':';
     };
