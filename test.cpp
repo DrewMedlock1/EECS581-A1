@@ -79,5 +79,8 @@ int main() {
             std::cout << str << std::endl;
         }
     }
+    else {
+        std::cout << " Tests passed." << std::endl;
+    }
 }
 
