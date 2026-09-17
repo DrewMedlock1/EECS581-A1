@@ -16,7 +16,7 @@
 
 static std::vector<std::string> testFailureStrings;
 static int testFailureCounter = 0;
-
+// Struct was written by me
 struct testCase {
     std::string testString;
     unsigned long expectedOutAddress;
@@ -26,6 +26,7 @@ struct testCase {
 
 
 /* Test Cases are listed as structs inside this function */
+// This vector function was written by me, test cases are from the slides and from me
 std::vector<testCase> createTestList() {
     std::vector<testCase> testList;
     // Given test cases:
@@ -64,7 +65,7 @@ bool testExtractIPv4(const std::string& str, const unsigned long& expectedOutAdd
     }
 
 }
-
+// Main was written by me
 int main() {
     auto testCases = createTestList();
     bool passedTests = true;
