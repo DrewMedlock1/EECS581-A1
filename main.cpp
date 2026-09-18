@@ -73,7 +73,8 @@ bool extractIPv4(const std::string& str, unsigned long& outAddress, int& outPort
         
         unsigned long address = 0;
         bool valid = true;
-
+        // This is a for loop that will run 4 times if the address is correctly formed, processing the ip addr in
+        // octect parts
         for (int part = 0; part < 4; ++part) {
             unsigned octet;
             if (!readNumber(3, 255, octet)) {
