@@ -44,6 +44,14 @@ std::vector<testCase> createTestList() {
     testList.push_back(testCase{"256.168.1.1", 0, -1, false});
     testList.push_back(testCase{"255.255.255.255", 4294967295, -1, true});
     testList.push_back(testCase{"0.0.0.0", 0, -1, true});
+    testList.push_back(testCase{"0.0.0.0.0", 0, -1, false});
+    testList.push_back(testCase{"0.0.0", 0, -1, false});
+    testList.push_back(testCase{"0.0.0.", 0, -1, false});
+    testList.push_back(testCase{"0.0.0.0:0", 0, 0, true}); // Instructions say 0 port is allowed
+    testList.push_back(testCase{"0.0.0.0:100:100", 0, -1, false});
+    testList.push_back(testCase{"0.0.0.0:65535", 0, 65535, true});
+    testList.push_back(testCase{"0.0.0.0:65536", 0, -1, false});
+    testList.push_back(testCase{"0.0.0.0:999999999999999999999999999", 0, -1, false});
     return testList;
 }
 
