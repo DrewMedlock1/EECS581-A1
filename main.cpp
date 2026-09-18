@@ -26,43 +26,51 @@ bool extractIPv4(const std::string& str, unsigned long& outAddress, int& outPort
     const auto isDigit = [](char c) {
         return c >= '0' && c <= '9';
     };
-
+    // This lambda function identifies if a character is something we are paying attention to, a digit, ., or :.
     const auto isTokenChar = [&](char c) {
         return isDigit(c) || c == '.' || c == ':';
     };
-
+    // This for loop iterates through the whole length of the string, and is where the processing takes place
     for (std::size_t i = 0; i < str.size();) {
+        // If the character isn't a token, then we just pass by it and move onto the next loop
         if (!isTokenChar(str[i])) {
             ++i;
             continue;
         }
-
+        // This code attempts to go on a "run" where each item is a token, and records the start and end
         const std::size_t begin = i;
         while (i < str.size() && isTokenChar(str[i]))
             ++i;
         const std::size_t end = i;
         std::size_t pos = begin;
 
+        // This is a lambda function that captures the external variables
         const auto readNumber = [&](std::size_t maxDigits,
                                     unsigned limit, unsigned& value) {
+            // maxDigits is a number for how many digits, while limit is a cap on the value of the number
             const std::size_t start = pos;
             value = 0;
-
+            // Will process all digits until the end or a none digit character
             while (pos < end && isDigit(str[pos])) {
+                // If the max Digit length is exceeded it immediately returns false, showing invalid
                 if (pos - start >= maxDigits)
                     return false;
-
+                // This is the logic for manually processing a digit from a string
+                // It takes a digit from the string subtracts out the ascii base using '0' and then adds it to the value
+                // It also increases the magnitude of value with the additional digit
+                // pos++ increments pos after accessing the value from the string
                 value = value * 10 +
                         static_cast<unsigned>(str[pos++] - '0');
-
+                // A quick check to make sure that the number is bigger than a given limit for example 255
                 if (value > limit)
                     return false;
             }
-
+            // This guarantees that the length is greater than 0, and that the string doesn't have a leading 0
+            // It does this by checking if the start is a 0, and it if it the length must be 1
             return pos > start &&
                    (pos - start == 1 || str[start] != '0');
         };
-
+        
         unsigned long address = 0;
         bool valid = true;
 
@@ -129,6 +137,7 @@ int main() {
                 (port == -1) ? port_string = "none" : port_string = std::to_string(port);
                                                                     // number-to-string functions aren't banned
                 unsigned int mask = 0xFF; // is eight 1's bit at end of int for extracting 8 bits from the decimal
+                // This just shifts the bits to the right to align them with the 0xFF to cap the numbers off to 255 for IPv4
                 unsigned int a = (address >> 24) & mask;
                 unsigned int b = (address >> 16) & mask;
                 unsigned int c = (address >> 8)  & mask;
