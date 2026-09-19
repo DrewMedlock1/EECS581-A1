@@ -1,7 +1,14 @@
 # AI Disclosure Statement
 ***
-*
-
+* The extractIPv4 function was written by ChatGPT-6 Astra
+* The use of flags to stop main from compiling for my test function was suggested by Google Gemini 3.8 Flash
+* I made no modifications to the extractIPv4 function, as it was able to pass all of my test cases on the first attempt, without giving the test cases as input
+* My test function module, main and parts of the Makefile were written by me.
+## Verification Statement
+***
+* I understand the submitted lines of code, and documented my understanding with the comments contained in the code
+* The code has been tested with the test cases shown in the test.cpp file, and works as intended.
+* There are no known bugs, limitations, or unexpected behavior, and follows the specifications given in the assignment.
 ***
 # Prompts:
 ### 1. GPT-6 Astra, Thinking level: Max, Date: 9/15/2026
