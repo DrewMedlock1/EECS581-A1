@@ -133,34 +133,31 @@ bool extractIPv4(const std::string& str, unsigned long& outAddress, int& outPort
 }
 
 #ifndef TESTING // ifndef blocks were suggested by Google Gemini 3.8 Flash Extended
-// Main function was written by Me
+// Main function was written by Me, change from std::cin to std::getline() was suggested by ChatGPT-6 Astra, as well as changes to the loop
 int main() {
     std::string input;
     unsigned long address;
     int port;
-    while (input != "END") {
+    while (true) {
         std::cout << "Enter a string (or 'END' to quit): ";
-        std::cin >> input;
-        if (input == "END") {
-            continue;
+        if (std::getline(std::cin, input) || input == "END") {
+            break;
+        }
+        if (extractIPv4(input, address, port)) {
+            std::string port_string; // If there is a port number we need to convert it to a string or None
+            (port == -1) ? port_string = "none" : port_string = std::to_string(port);
+                                                                // number-to-string functions aren't banned
+            unsigned int mask = 0xFF; // is eight 1's bit at end of int for extracting 8 bits from the decimal
+            // This just shifts the bits to the right to align them with the 0xFF to cap the numbers off to 255 for IPv4
+            unsigned int a = (address >> 24) & mask;
+            unsigned int b = (address >> 16) & mask;
+            unsigned int c = (address >> 8)  & mask;
+            unsigned int d =  address        & mask;
+            std::cout << "Extracted IPv4 address: " <<  a << '.' << b << '.' << c << '.' << d \
+                      << " (decimal value: " << address << ", port: " << port_string << ")" << std::endl;
         }
         else {
-            if (extractIPv4(input, address, port)) {
-                std::string port_string; // If there is a port number we need to convert it to a string or None
-                (port == -1) ? port_string = "none" : port_string = std::to_string(port);
-                                                                    // number-to-string functions aren't banned
-                unsigned int mask = 0xFF; // is eight 1's bit at end of int for extracting 8 bits from the decimal
-                // This just shifts the bits to the right to align them with the 0xFF to cap the numbers off to 255 for IPv4
-                unsigned int a = (address >> 24) & mask;
-                unsigned int b = (address >> 16) & mask;
-                unsigned int c = (address >> 8)  & mask;
-                unsigned int d =  address        & mask;
-                std::cout << "Extracted IPv4 address: " <<  a << '.' << b << '.' << c << '.' << d \
-                          << " (decimal value: " << address << ", port: " << port_string << ")" << std::endl;
-            }
-            else {
-                std::cout << "Invalid input: no valid IPv4 address found" << std::endl;
-            }
+            std::cout << "Invalid input: no valid IPv4 address found" << std::endl;
         }
     }
     std::cout << "Program terminated." << std::endl;
