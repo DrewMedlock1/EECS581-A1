@@ -18,6 +18,17 @@
  */
 bool extractIPv4(const std::string& str, unsigned long& outAddress, int& outPort)
 {
+    /*
+     * The control flow of this function:
+     *  * For each character the function attempts to go on a "run" of valid tokens
+     *  * It then attempts to break this run into 4 parts for the ip address
+     *  * If there is a ':' present, it attempts to read a port address from the end of the run of tokens
+     * For checking if it is a digit, it does this with the ascii values of the numbers
+     * For checking if it is a token, it reuses the previous function, and checks for '.' and ':' specifically.
+     * For converting between chars to int, it subtracts the base ascii value of the numbers away then shifts the
+     * accumulating number in base 10, and adds the decimal number to the int with a static cast
+     * For validation it checks for 4 octets of 3 maximum digits, with a max value of 255. If it starts with a 0, it must be length 1
+     */
     // These set the default values of the 2 input values for returning if nothing matches.
     outAddress = 0;
     outPort = -1;
@@ -74,7 +85,7 @@ bool extractIPv4(const std::string& str, unsigned long& outAddress, int& outPort
         unsigned long address = 0;
         bool valid = true;
         // This is a for loop that will run 4 times if the address is correctly formed, processing the ip addr in
-        // octect parts
+        // octet parts
         for (int part = 0; part < 4; ++part) {
             unsigned octet;
             // It attempts to read the next 3 numbers from the input for an octet of the ip addr
