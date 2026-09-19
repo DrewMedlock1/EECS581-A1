@@ -4,6 +4,7 @@
 * The use of flags to stop main from compiling for my test function was suggested by Google Gemini 3.8 Flash
 * I made no modifications to the extractIPv4 function, as it was able to pass all of my test cases on the first attempt, without giving the test cases as input
 * My test function module, main and parts of the Makefile were written by me.
+* A suggestion to change the input and loop in main from std::cin to std::getline() was from ChatGPT-6 Astra
 ## Verification Statement
 ***
 * I understand the submitted lines of code, and documented my understanding with the comments contained in the code
@@ -513,4 +514,39 @@ clean:
 	rm -f main test *.o
 
 ```
+### Prompt 5: ChatGPT 6 Astra, Thinking Level: Extra High, Date: 9/19/2026
+```
+Check my main function: @main.cpp 
+```
+### Output: https://chatgpt.com/share/6aaede69-a364-83ea-83d8-f653b3cfe7a2
+```
+Your [main.cpp](sandbox:/workspace/scratch/c56f85d0b793/upload/main.cpp) compiles cleanly with `-Wall -Wextra -Wpedantic`, but I confirmed two input-handling issues:
+
+1. **EOF causes an infinite loop (line 143).** You never check whether `std::cin >> input` succeeds. When input ends, the program repeatedly prints prompts and results.
+2. **Input is read one word at a time (line 143).** For `server address 192.168.1.2:8080`, your program processes three separate inputs, printing two errors before finding the address. Use `std::getline` if each entered line should be searched as one string.
+
+Replace the outer loop and `"END"` check with this pattern, keeping your existing extraction/output block inside:
+
+cpp
+while (true) {
+    std::cout << "Enter a string (or 'END' to quit): ";
+
+    if (!std::getline(std::cin, input) || input == "END") {
+        break;
+    }
+
+    // Your existing if (extractIPv4(...)) / else block goes here.
+}
+
+Your octet shifts and masks are correct, and displaying `"none"` for port `-1` works. Your current `continue` also correctly exits on `"END"` because the loop condition is checked again; `break` simply makes that intent clearer.
+
+One minor cleanup: the trailing `\` on line 158 is unnecessary—C++ allows the output expression to continue on the next line.
+
+
+If you want, I can:
+
+* Show corrected main function code with improved input handling
+* Explain why using std::getline is better for multi-word input lines
+* Suggest tests to verify the main function handles EOF and multi-word inputs well
+
 ***
