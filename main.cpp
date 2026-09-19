@@ -77,26 +77,27 @@ bool extractIPv4(const std::string& str, unsigned long& outAddress, int& outPort
         // octect parts
         for (int part = 0; part < 4; ++part) {
             unsigned octet;
+            // It attempts to read the next 3 numbers from the input for an octet of the ip addr
             if (!readNumber(3, 255, octet)) {
                 valid = false;
                 break;
             }
 
-            // Pack the first octet into the most significant byte.
+            // After reading the octet it shifts the address over by 8 bits then puts the octet in
             address = (address << 8) | octet;
-
+            // If the part isn't the last (fourth) part, then the pos index must be pointing to a ., or the run is invalid
             if (part < 3) {
                 if (pos == end || str[pos] != '.') {
                     valid = false;
                     break;
                 }
-                ++pos;
+                ++pos; // Increments to start reading the next part
             }
         }
-
+        // If this string wasn't valid then it continues to the next character to start at
         if (!valid)
             continue;
-
+        // This now attempts to read the port if there is an : at the end of the 4 octets.
         int port = -1;
         if (pos < end && str[pos] == ':') {
             ++pos;
@@ -107,16 +108,16 @@ bool extractIPv4(const std::string& str, unsigned long& outAddress, int& outPort
 
             port = static_cast<int>(parsedPort);
         }
-
+        // If the position after reading the port still is not at the end, it isn't valid and it goes to the next char
         if (pos != end)
             continue;
 
-        // Return the first valid complete token.
+        // Sets the variables put in by reference to the first address and port that was read in, then returns true
         outAddress = address;
         outPort = port;
         return true;
     }
-
+    // If the loop doesn't identify any valid addresses it will return false with the values set as 0, and -1
     return false;
 }
 
