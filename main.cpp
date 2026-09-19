@@ -140,7 +140,7 @@ int main() {
     int port;
     while (true) {
         std::cout << "Enter a string (or 'END' to quit): ";
-        if (std::getline(std::cin, input) || input == "END") {
+        if (!std::getline(std::cin, input) || input == "END") {
             break;
         }
         if (extractIPv4(input, address, port)) {
